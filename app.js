@@ -27,9 +27,31 @@ let items = [
 let categoryFilter = "all";
 let orderFilter = "desc";
 
-// Renderizar estrellas (máximo 7)
+// Asigna la clase de color según el número de estrella (1-7)
+function getStarClass(num) {
+    switch(num) {
+        case 1: return "star-quartz";
+        case 2: return "star-amethyst";
+        case 3: return "star-topaz";
+        case 4: return "star-ruby";
+        case 5: return "star-sapphire";
+        case 6: return "star-emerald";
+        case 7: return "star-diamond";
+        default: return "star-empty";
+    }
+}
+
+// Renderiza hasta 7 estrellas, cada una con su color
 function renderStars(num) {
-    return '★'.repeat(num) + '☆'.repeat(7 - num);
+    let html = "";
+    for(let i=1; i<=7; i++) {
+        if(i <= num) {
+            html += `<span class="${getStarClass(i)}">★</span>`;
+        } else {
+            html += `<span class="star-empty">☆</span>`;
+        }
+    }
+    return html;
 }
 
 // Calcular promedio de estrellas (entero)
