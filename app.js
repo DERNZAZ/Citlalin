@@ -41,17 +41,31 @@ function getStarClass(num) {
     }
 }
 
-// Renderiza hasta 7 estrellas, cada una con su color
+// Renderiza hasta 7 estrellas, cada una con su color/gema correspondiente
 function renderStars(num) {
     let html = "";
     for(let i=1; i<=7; i++) {
         if(i <= num) {
-            html += `<span class="${getStarClass(i)}">★</span>`;
+            html += `<span class="${getStarClass(i)}" title="${getGemName(i)}">${"★"}</span>`;
         } else {
             html += `<span class="star-empty">☆</span>`;
         }
     }
     return html;
+}
+
+// Muestra el nombre de la gema al pasar el mouse (opcional)
+function getGemName(num) {
+    switch(num) {
+        case 1: return "Cuarzo";
+        case 2: return "Amatista";
+        case 3: return "Topacio";
+        case 4: return "Rubí";
+        case 5: return "Zafiro";
+        case 6: return "Esmeralda";
+        case 7: return "Diamante";
+        default: return "";
+    }
 }
 
 // Calcular promedio de estrellas (entero)
