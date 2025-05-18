@@ -56,31 +56,11 @@ function renderUserInfo() {
         `;
         document.getElementById("logout-btn").onclick = function() {
             clearUser();
-            showRegisterSection();
+            updateUI();
         };
     } else {
         el.innerHTML = `<span>No has iniciado sesión.</span>`;
     }
-}
-
-// Mostrar formulario de registro
-function showRegisterSection() {
-    document.getElementById("register-section").classList.remove("hidden");
-    document.getElementById("controls").classList.add("hidden");
-    document.getElementById("add-item").classList.add("hidden");
-    document.getElementById("items-list").classList.add("hidden");
-    document.getElementById("rate-item-section").classList.add("hidden");
-    renderUserInfo();
-}
-
-// Ocultar registro y mostrar contenido
-function showMainContent() {
-    document.getElementById("register-section").classList.add("hidden");
-    document.getElementById("controls").classList.remove("hidden");
-    document.getElementById("add-item").classList.remove("hidden");
-    document.getElementById("items-list").classList.remove("hidden");
-    renderUserInfo();
-    renderItems();
 }
 
 // ------- ESTRELLAS Y GEMAS ---------
@@ -185,6 +165,38 @@ document.getElementById('order-filter').onchange = function() {
     renderItems();
 };
 
+// ------- MODALES Y BOTONES SUPERIORES ---------
+
+function showModal(id) {
+    document.getElementById(id).classList.remove('hidden');
+}
+function closeModal(id) {
+    document.getElementById(id).classList.add('hidden');
+}
+
+// Botón "Registrarse"
+document.getElementById('btn-register').onclick = function() {
+    showModal('register-modal');
+};
+// Botón "Califica"
+document.getElementById('btn-califica').onclick = function() {
+    if (!currentUser) {
+        alert('Debes estar registrado para agregar un ítem.');
+        showModal('register-modal');
+        return;
+    }
+    showModal('add-item-modal');
+};
+
+// Cierra modal registro
+document.getElementById('close-register').onclick = function() {
+    closeModal('register-modal');
+};
+// Cierra modal agregar ítem
+document.getElementById('close-add-item').onclick = function() {
+    closeModal('add-item-modal');
+};
+
 // ------- AGREGAR ITEM ---------
 
 document.getElementById('item-form').addEventListener('submit', function(e) {
@@ -201,6 +213,7 @@ document.getElementById('item-form').addEventListener('submit', function(e) {
         opinions: { user: [], expert: [] }
     });
     this.reset();
+    closeModal('add-item-modal');
     renderItems();
 });
 
@@ -210,7 +223,7 @@ let currentRateIdx = null;
 function openRateForm(idx) {
     if (!currentUser) {
         alert("Debes registrarte o iniciar sesión para calificar.");
-        showRegisterSection();
+        showModal('register-modal');
         return;
     }
     currentRateIdx = idx;
@@ -226,7 +239,7 @@ document.getElementById('rate-form').addEventListener('submit', function(e) {
     e.preventDefault();
     if (!currentUser) {
         alert("Debes registrarte o iniciar sesión para calificar.");
-        showRegisterSection();
+        showModal('register-modal');
         return;
     }
     const rating = parseInt(document.getElementById('star-rating').value);
@@ -255,16 +268,18 @@ document.getElementById('register-form').addEventListener('submit', function(e) 
     currentUser = { name, age, email, type };
     saveUser(currentUser);
     this.reset();
-    showMainContent();
+    closeModal('register-modal');
+    updateUI();
 });
 
-// ------- INICIALIZAR ---------
+// ------- INICIALIZAR Y FLUJO ---------
+
+function updateUI() {
+    renderUserInfo();
+    renderItems();
+}
 
 window.onload = function() {
     loadUser();
-    if (currentUser) {
-        showMainContent();
-    } else {
-        showRegisterSection();
-    }
+    updateUI();
 };
