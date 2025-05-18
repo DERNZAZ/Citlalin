@@ -8,9 +8,10 @@ body {
 header {
     background: #132D46;
     color: #01C38D;
-    padding: 2rem 1rem 1rem 1rem;
+    padding: 2.5rem 1rem 1.5rem 1rem;
     text-align: center;
     border-bottom: 2px solid #01C38D;
+    position: relative;
 }
 header h1 {
     font-family: 'Montserrat', 'TT Commons', Arial, sans-serif;
@@ -18,6 +19,7 @@ header h1 {
     font-size: 2.6rem;
     color: #FFFFFF;
     letter-spacing: 2px;
+    margin-bottom: 0.2em;
 }
 header p {
     font-family: 'Montserrat', 'TT Commons', Arial, sans-serif;
@@ -52,31 +54,89 @@ header p {
     background: #01C38D;
     color: #fff;
 }
-#register-section {
-    max-width: 420px;
-    margin: 2rem auto 2.5rem auto;
-    background: #191E29;
-    border: 1.5px solid #01C38D;
-    border-radius: 12px;
-    padding: 2rem 2rem 1.5rem 2rem;
-    box-shadow: 0 2px 12px rgba(1,195,141,0.07);
+/* --- BOTONERA FLOTANTE --- */
+#floating-buttons {
+    position: absolute;
+    top: 1.5em;
+    right: 2.2em;
+    display: flex;
+    gap: 1em;
+    z-index: 100;
 }
-#register-section h2 {
+.main-action-btn {
+    background: linear-gradient(90deg, #01C38D 70%, #132D46 100%);
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 25px;
+    padding: 0.7em 1.6em;
+    font-size: 1.09em;
+    box-shadow: 0 2px 14px rgba(1,195,141,0.13);
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: background 0.15s, transform 0.15s;
+    outline: none;
+}
+.main-action-btn:hover, .main-action-btn:focus {
+    background: linear-gradient(90deg, #132D46 20%, #01C38D 100%);
+    color: #01C38D;
+    transform: translateY(-2px) scale(1.04);
+    border: 1.5px solid #01C38D;
+}
+
+/* --- MODALES --- */
+.modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(25,30,41,0.85);
+    z-index: 999;
+}
+.modal-content {
+    background: #132D46;
+    border-radius: 16px;
+    box-shadow: 0 6px 36px rgba(1,195,141,0.13);
+    padding: 2.2rem 2.7rem 2rem 2.7rem;
+    width: 100%;
+    max-width: 430px;
+    position: relative;
+    border: 2.5px solid #01C38D;
+}
+.close-modal {
+    position: absolute;
+    top: 1.2rem;
+    right: 2rem;
+    font-size: 2rem;
+    color: #01C38D;
+    cursor: pointer;
+    font-weight: bold;
+    transition: color 0.1s;
+}
+.close-modal:hover {
+    color: #fff;
+}
+.modal-content h2 {
     color: #01C38D;
     margin-bottom: 1.3rem;
+    text-align: center;
+    font-weight: bold;
 }
-#register-form input, #register-form select {
+.modal-content form input,
+.modal-content form select {
     width: 100%;
     margin-bottom: 1.1rem;
     padding: 0.8rem;
     border-radius: 6px;
     border: 1.5px solid #696E79;
     font-size: 1rem;
-    background: #132D46;
+    background: #191E29;
     color: #fff;
     font-family: 'Montserrat', 'TT Commons', Arial, sans-serif;
 }
-#register-form button {
+.modal-content form button {
     width: 100%;
     background: #01C38D;
     color: #fff;
@@ -88,9 +148,11 @@ header p {
     font-size: 1.1em;
     transition: background 0.2s;
 }
-#register-form button:hover {
+.modal-content form button:hover {
     background: #00a372;
 }
+
+/* -- Main content -- */
 main {
     max-width: 750px;
     margin: 2rem auto;
@@ -111,11 +173,6 @@ label {
     color: #01C38D;
     font-weight: 500;
     font-size: 1rem;
-}
-#add-item {
-    margin-top: 2.5rem;
-    padding-top: 1rem;
-    border-top: 1px solid #696E79;
 }
 form input, form select {
     display: block;
