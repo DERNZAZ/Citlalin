@@ -2,10 +2,73 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Bienvenido a Citlalin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citlalin - Blog de Rankings</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>¡Hola, mundo!</h1>
-    <p>Esta es una página sencilla publicada con GitHub Pages.</p>
+    <header>
+        <h1>Citlalin ⭐</h1>
+        <p>Ranking de Videojuegos, Personas Públicas y Lugares. Sistema de 7 estrellas.</p>
+    </header>
+    <main>
+        <section id="controls">
+            <label for="category-filter">Categoría:</label>
+            <select id="category-filter">
+                <option value="all">Todas</option>
+                <option value="Videojuegos">Videojuegos</option>
+                <option value="Personas Públicas">Personas Públicas</option>
+                <option value="Lugares">Lugares</option>
+            </select>
+            <label for="order-filter">Ordenar por:</label>
+            <select id="order-filter">
+                <option value="desc">Mayor a menor calificados</option>
+                <option value="asc">Menor a mayor calificados</option>
+            </select>
+        </section>
+        <section id="items-list">
+            <!-- Aquí se mostrarán los ítems -->
+        </section>
+        <section id="add-item">
+            <h2>Agregar nuevo ítem</h2>
+            <form id="item-form">
+                <input type="text" id="item-title" placeholder="Título" required>
+                <select id="item-category" required>
+                    <option value="">Elige categoría</option>
+                    <option value="Videojuegos">Videojuegos</option>
+                    <option value="Personas Públicas">Personas Públicas</option>
+                    <option value="Lugares">Lugares</option>
+                </select>
+                <input type="text" id="item-description" placeholder="Descripción breve" required>
+                <button type="submit">Agregar</button>
+            </form>
+        </section>
+        <section id="rate-item-section" class="hidden">
+            <h2>Calificar: <span id="rate-item-title"></span></h2>
+            <form id="rate-form">
+                <label>Tipo de usuario:</label>
+                <select id="user-type" required>
+                    <option value="">Selecciona</option>
+                    <option value="user">Usuario común</option>
+                    <option value="expert">Experto</option>
+                </select>
+                <label>Puntaje:</label>
+                <select id="star-rating" required>
+                    <option value="">Selecciona</option>
+                    <option value="1">1 estrella</option>
+                    <option value="2">2 estrellas</option>
+                    <option value="3">3 estrellas</option>
+                    <option value="4">4 estrellas</option>
+                    <option value="5">5 estrellas</option>
+                    <option value="6">6 estrellas</option>
+                    <option value="7">7 estrellas</option>
+                </select>
+                <input type="text" id="single-word" placeholder="Una sola palabra" maxlength="20" required>
+                <button type="submit">Enviar calificación</button>
+                <button type="button" id="close-rate">Cancelar</button>
+            </form>
+        </section>
+    </main>
+    <script src="app.js"></script>
 </body>
 </html>
