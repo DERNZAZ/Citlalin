@@ -5,21 +5,21 @@ let items = [
         category: "Videojuegos",
         description: "Aventura épica de mundo abierto.",
         rankings: { user: [7, 6, 7], expert: [7, 7] },
-        opinions: { user: ["Épico", "Innovador", "Asombroso"], expert: ["Referente", "Obra"] }
+        opinions: { user: [{word: "Épico", name: "Mario"}, {word: "Innovador", name: "Luisa"}, {word: "Asombroso", name: "Mario"}], expert: [{word: "Referente", name: "Expert Z"}, {word: "Obra", name: "Expert Z"}] }
     },
     {
         title: "Ciudad de México",
         category: "Lugares",
         description: "Capital de México, llena de historia y cultura.",
         rankings: { user: [6, 5], expert: [6] },
-        opinions: { user: ["Vibrante", "Completa"], expert: ["Diversa"] }
+        opinions: { user: [{word: "Vibrante", name: "Pepe"}, {word: "Completa", name: "Luisa"}], expert: [{word: "Diversa", name: "Expert A"}] }
     },
     {
         title: "Elon Musk",
         category: "Personas Públicas",
         description: "Emprendedor, CEO de varias compañías tecnológicas.",
         rankings: { user: [5, 4], expert: [5] },
-        opinions: { user: ["Polémico", "Genio"], expert: ["Visionario"] }
+        opinions: { user: [{word: "Polémico", name: "Mario"}, {word: "Genio", name: "Luisa"}], expert: [{word: "Visionario", name: "Expert X"}] }
     }
 ];
 
@@ -27,7 +27,64 @@ let items = [
 let categoryFilter = "all";
 let orderFilter = "desc";
 
-// Asigna la clase de color según el número de estrella (1-7)
+// Usuario actual (se guarda en localStorage)
+let currentUser = null;
+
+// ------- GESTIÓN DE USUARIO ---------
+
+function saveUser(user) {
+    localStorage.setItem("citlalin_user", JSON.stringify(user));
+}
+
+function loadUser() {
+    const u = localStorage.getItem("citlalin_user");
+    if (u) currentUser = JSON.parse(u);
+}
+
+function clearUser() {
+    localStorage.removeItem("citlalin_user");
+    currentUser = null;
+}
+
+// Mostrar usuario en cabecera
+function renderUserInfo() {
+    const el = document.getElementById("user-info");
+    if (currentUser) {
+        el.innerHTML = `
+            <span>Bienvenido, <b>${currentUser.name}</b> (${currentUser.type === "expert" ? "Experto" : "Usuario"})</span>
+            <button class="logout-btn" id="logout-btn">Cerrar sesión</button>
+        `;
+        document.getElementById("logout-btn").onclick = function() {
+            clearUser();
+            showRegisterSection();
+        };
+    } else {
+        el.innerHTML = `<span>No has iniciado sesión.</span>`;
+    }
+}
+
+// Mostrar formulario de registro
+function showRegisterSection() {
+    document.getElementById("register-section").classList.remove("hidden");
+    document.getElementById("controls").classList.add("hidden");
+    document.getElementById("add-item").classList.add("hidden");
+    document.getElementById("items-list").classList.add("hidden");
+    document.getElementById("rate-item-section").classList.add("hidden");
+    renderUserInfo();
+}
+
+// Ocultar registro y mostrar contenido
+function showMainContent() {
+    document.getElementById("register-section").classList.add("hidden");
+    document.getElementById("controls").classList.remove("hidden");
+    document.getElementById("add-item").classList.remove("hidden");
+    document.getElementById("items-list").classList.remove("hidden");
+    renderUserInfo();
+    renderItems();
+}
+
+// ------- ESTRELLAS Y GEMAS ---------
+
 function getStarClass(num) {
     switch(num) {
         case 1: return "star-quartz";
@@ -41,20 +98,6 @@ function getStarClass(num) {
     }
 }
 
-// Renderiza hasta 7 estrellas, cada una con su color/gema correspondiente
-function renderStars(num) {
-    let html = "";
-    for(let i=1; i<=7; i++) {
-        if(i <= num) {
-            html += `<span class="${getStarClass(i)}" title="${getGemName(i)}">${"★"}</span>`;
-        } else {
-            html += `<span class="star-empty">☆</span>`;
-        }
-    }
-    return html;
-}
-
-// Muestra el nombre de la gema al pasar el mouse (opcional)
 function getGemName(num) {
     switch(num) {
         case 1: return "Cuarzo";
@@ -68,16 +111,27 @@ function getGemName(num) {
     }
 }
 
-// Calcular promedio de estrellas (entero)
+function renderStars(num) {
+    let html = "";
+    for(let i=1; i<=7; i++) {
+        if(i <= num) {
+            html += `<span class="${getStarClass(i)}" title="${getGemName(i)}">${"★"}</span>`;
+        } else {
+            html += `<span class="star-empty">☆</span>`;
+        }
+    }
+    return html;
+}
+
 function avg(arr) {
     if (arr.length === 0) return 0;
     return Math.round(arr.reduce((a, b) => a + b, 0) / arr.length);
 }
 
-// Mostrar ítems
+// ------- MOSTRAR ITEMS ---------
+
 function renderItems() {
     let filtered = items.filter(item => categoryFilter === "all" || item.category === categoryFilter);
-    // Promedio combinado user + expert para ordenar
     filtered = filtered.map(item => ({
         ...item,
         combinedAvg: avg(item.rankings.user.concat(item.rankings.expert))
@@ -106,17 +160,16 @@ function renderItems() {
             </div>
             <div class="rank-opinions">
                 <b>Palabras de usuarios:</b>
-                ${item.opinions.user.map(op => `<span class="opinion">"${op}"</span>`).join(", ")}
+                ${item.opinions.user.map(op => `<span class="opinion by-user" title="Por: ${op.name}">${op.word}</span>`).join(" ")}
                 <br>
                 <b>Palabras de expertos:</b>
-                ${item.opinions.expert.map(op => `<span class="opinion">"${op}"</span>`).join(", ")}
+                ${item.opinions.expert.map(op => `<span class="opinion by-expert" title="Por: ${op.name}">${op.word}</span>`).join(" ")}
             </div>
             <button class="rate-btn" data-idx="${idx}">Calificar</button>
         </div>
         `;
     });
 
-    // Asignar eventos a botones de calificar
     document.querySelectorAll('.rate-btn').forEach(btn => {
         btn.onclick = () => openRateForm(btn.getAttribute('data-idx'));
     });
@@ -132,7 +185,8 @@ document.getElementById('order-filter').onchange = function() {
     renderItems();
 };
 
-// Agregar nuevo ítem
+// ------- AGREGAR ITEM ---------
+
 document.getElementById('item-form').addEventListener('submit', function(e) {
     e.preventDefault();
     const title = document.getElementById('item-title').value.trim();
@@ -150,9 +204,15 @@ document.getElementById('item-form').addEventListener('submit', function(e) {
     renderItems();
 });
 
-// Calificar ítem
+// ------- CALIFICAR ITEM ---------
+
 let currentRateIdx = null;
 function openRateForm(idx) {
+    if (!currentUser) {
+        alert("Debes registrarte o iniciar sesión para calificar.");
+        showRegisterSection();
+        return;
+    }
     currentRateIdx = idx;
     document.getElementById('rate-item-title').textContent = items[idx].title;
     document.getElementById('rate-item-section').classList.remove('hidden');
@@ -164,18 +224,47 @@ document.getElementById('close-rate').onclick = function() {
 };
 document.getElementById('rate-form').addEventListener('submit', function(e) {
     e.preventDefault();
-    const userType = document.getElementById('user-type').value;
+    if (!currentUser) {
+        alert("Debes registrarte o iniciar sesión para calificar.");
+        showRegisterSection();
+        return;
+    }
     const rating = parseInt(document.getElementById('star-rating').value);
     const word = document.getElementById('single-word').value.trim();
-    if (!userType || !rating || !word) return;
+    if (!rating || !word) return;
     const target = items[currentRateIdx];
-    target.rankings[userType].push(rating);
-    target.opinions[userType].push(word);
+    target.rankings[currentUser.type].push(rating);
+    target.opinions[currentUser.type].push({word, name: currentUser.name});
     document.getElementById('rate-item-section').classList.add('hidden');
     this.reset();
     renderItems();
     currentRateIdx = null;
 });
 
-// Inicializar
-renderItems();
+// ------- REGISTRO DE USUARIO ---------
+
+document.getElementById('register-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const name = document.getElementById('reg-name').value.trim();
+    const age = parseInt(document.getElementById('reg-age').value);
+    const email = document.getElementById('reg-email').value.trim();
+    const type = document.getElementById('reg-type').value;
+
+    if (!name || !age || !email || !type) return;
+
+    currentUser = { name, age, email, type };
+    saveUser(currentUser);
+    this.reset();
+    showMainContent();
+});
+
+// ------- INICIALIZAR ---------
+
+window.onload = function() {
+    loadUser();
+    if (currentUser) {
+        showMainContent();
+    } else {
+        showRegisterSection();
+    }
+};
