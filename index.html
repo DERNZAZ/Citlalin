@@ -11,24 +11,47 @@
     <header>
         <h1>Citlalin ⭐</h1>
         <p>Ranking de Videojuegos, Personas Públicas y Lugares. Sistema de 7 estrellas.</p>
-        <div id="user-info" class="user-info">
-            <!-- Aquí se muestra el usuario registrado -->
+        <div id="user-info" class="user-info"></div>
+        <!-- Botonera flotante -->
+        <div id="floating-buttons">
+            <button id="btn-register" class="main-action-btn">Registrarse</button>
+            <button id="btn-califica" class="main-action-btn">Califica</button>
         </div>
     </header>
     <main>
-        <section id="register-section">
-            <h2>Registro de Usuario</h2>
-            <form id="register-form">
-                <input type="text" id="reg-name" placeholder="Nombre completo" required maxlength="50">
-                <input type="number" id="reg-age" placeholder="Edad" required min="12" max="120">
-                <input type="email" id="reg-email" placeholder="Correo electrónico" required maxlength="50">
-                <select id="reg-type" required>
-                    <option value="">Tipo de usuario</option>
-                    <option value="user">Usuario común</option>
-                    <option value="expert">Experto</option>
-                </select>
-                <button type="submit">Registrarme</button>
-            </form>
+        <section id="register-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-modal" id="close-register">&times;</span>
+                <h2>Registro de Usuario</h2>
+                <form id="register-form">
+                    <input type="text" id="reg-name" placeholder="Nombre completo" required maxlength="50">
+                    <input type="number" id="reg-age" placeholder="Edad" required min="12" max="120">
+                    <input type="email" id="reg-email" placeholder="Correo electrónico" required maxlength="50">
+                    <select id="reg-type" required>
+                        <option value="">Tipo de usuario</option>
+                        <option value="user">Usuario común</option>
+                        <option value="expert">Experto</option>
+                    </select>
+                    <button type="submit">Registrarme</button>
+                </form>
+            </div>
+        </section>
+        <section id="add-item-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-modal" id="close-add-item">&times;</span>
+                <h2>Agregar nuevo ítem</h2>
+                <form id="item-form">
+                    <input type="text" id="item-title" placeholder="Título" required maxlength="50">
+                    <select id="item-category" required>
+                        <option value="">Elige categoría</option>
+                        <option value="Videojuegos">Videojuegos</option>
+                        <option value="Personas Públicas">Personas Públicas</option>
+                        <option value="Lugares">Lugares</option>
+                    </select>
+                    <input type="text" id="item-description" placeholder="Una palabra que describe el tópico que estás calificando" maxlength="20" required>
+                    <button type="submit">Agregar</button>
+                </form>
+            </div>
         </section>
         <section id="controls">
             <label for="category-filter">Categoría:</label>
@@ -46,20 +69,6 @@
         </section>
         <section id="items-list">
             <!-- Aquí se mostrarán los ítems -->
-        </section>
-        <section id="add-item">
-            <h2>Agregar nuevo ítem</h2>
-            <form id="item-form">
-                <input type="text" id="item-title" placeholder="Título" required maxlength="50">
-                <select id="item-category" required>
-                    <option value="">Elige categoría</option>
-                    <option value="Videojuegos">Videojuegos</option>
-                    <option value="Personas Públicas">Personas Públicas</option>
-                    <option value="Lugares">Lugares</option>
-                </select>
-                <input type="text" id="item-description" placeholder="Una palabra que describe el tópico que estás calificando" maxlength="20" required>
-                <button type="submit">Agregar</button>
-            </form>
         </section>
         <section id="rate-item-section" class="hidden">
             <h2>Calificar: <span id="rate-item-title"></span></h2>
