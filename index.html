@@ -4,14 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Citlalin - Blog de Rankings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
         <h1>Citlalin ⭐</h1>
         <p>Ranking de Videojuegos, Personas Públicas y Lugares. Sistema de 7 estrellas.</p>
+        <div id="user-info" class="user-info">
+            <!-- Aquí se muestra el usuario registrado -->
+        </div>
     </header>
     <main>
+        <section id="register-section">
+            <h2>Registro de Usuario</h2>
+            <form id="register-form">
+                <input type="text" id="reg-name" placeholder="Nombre completo" required maxlength="50">
+                <input type="number" id="reg-age" placeholder="Edad" required min="12" max="120">
+                <input type="email" id="reg-email" placeholder="Correo electrónico" required maxlength="50">
+                <select id="reg-type" required>
+                    <option value="">Tipo de usuario</option>
+                    <option value="user">Usuario común</option>
+                    <option value="expert">Experto</option>
+                </select>
+                <button type="submit">Registrarme</button>
+            </form>
+        </section>
         <section id="controls">
             <label for="category-filter">Categoría:</label>
             <select id="category-filter">
@@ -32,7 +50,7 @@
         <section id="add-item">
             <h2>Agregar nuevo ítem</h2>
             <form id="item-form">
-                <input type="text" id="item-title" placeholder="Título" required>
+                <input type="text" id="item-title" placeholder="Título" required maxlength="50">
                 <select id="item-category" required>
                     <option value="">Elige categoría</option>
                     <option value="Videojuegos">Videojuegos</option>
@@ -46,12 +64,6 @@
         <section id="rate-item-section" class="hidden">
             <h2>Calificar: <span id="rate-item-title"></span></h2>
             <form id="rate-form">
-                <label>Tipo de usuario:</label>
-                <select id="user-type" required>
-                    <option value="">Selecciona</option>
-                    <option value="user">Usuario común</option>
-                    <option value="expert">Experto</option>
-                </select>
                 <label>Puntaje:</label>
                 <select id="star-rating" required>
                     <option value="">Selecciona</option>
