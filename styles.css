@@ -1,22 +1,38 @@
 body {
-    font-family: Arial, sans-serif;
-    background: #f3f3f3;
+    font-family: 'Montserrat', 'TT Commons', Arial, sans-serif;
+    background: #191E29;
+    color: #FFFFFF;
     margin: 0;
     padding: 0;
 }
 header {
-    background: #2b2b2b;
-    color: #fff;
+    background: #132D46;
+    color: #01C38D;
     padding: 2rem 1rem;
     text-align: center;
+    border-bottom: 2px solid #01C38D;
+}
+header h1 {
+    font-family: 'Montserrat', 'TT Commons', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 2.6rem;
+    color: #FFFFFF;
+    letter-spacing: 2px;
+}
+header p {
+    font-family: 'Montserrat', 'TT Commons', Arial, sans-serif;
+    font-weight: 500;
+    color: #01C38D;
+    margin-top: 0.5em;
 }
 main {
     max-width: 750px;
     margin: 2rem auto;
-    background: #fff;
-    border-radius: 10px;
+    background: #132D46;
+    border-radius: 18px;
     padding: 2rem;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 32px rgba(1,195,141,0.10);
+    border: 1.5px solid #191E29;
 }
 #controls {
     display: flex;
@@ -25,79 +41,105 @@ main {
     margin-bottom: 2rem;
     flex-wrap: wrap;
 }
+label {
+    color: #01C38D;
+    font-weight: 500;
+    font-size: 1rem;
+}
 #add-item {
     margin-top: 2.5rem;
     padding-top: 1rem;
-    border-top: 1px solid #eee;
+    border-top: 1px solid #696E79;
 }
 form input, form select {
     display: block;
     width: 100%;
     margin-bottom: 1rem;
     padding: 0.8rem;
-    border-radius: 4px;
-    border: 1px solid #ccc;
+    border-radius: 6px;
+    border: 1.5px solid #696E79;
     font-size: 1rem;
+    background: #191E29;
+    color: #fff;
+    font-family: 'Montserrat', 'TT Commons', Arial, sans-serif;
 }
 form button {
-    background: #2b2b2b;
+    background: #01C38D;
     color: #fff;
     padding: 0.7rem 1.5rem;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
     margin-right: 1rem;
+    font-weight: 600;
+    font-size: 1.1em;
+    transition: background 0.2s;
 }
 form button[type="button"] {
-    background: #bbb;
-    color: #222;
+    background: #696E79;
+    color: #191E29;
+}
+form button:hover {
+    background: #00a372;
 }
 .item-card {
-    background: #fafafa;
+    background: #191E29;
     margin-bottom: 1.5rem;
-    padding: 1rem 1.5rem;
-    border-radius: 6px;
-    border: 1px solid #e0e0e0;
+    padding: 1.3rem 1.5rem;
+    border-radius: 10px;
+    border: 1.5px solid #696E79;
     position: relative;
+    box-shadow: 0 2px 8px rgba(1,195,141,0.03);
 }
 .stars {
-    font-size: 1.3em;
+    font-size: 1.4em;
     vertical-align: middle;
+    letter-spacing: 2px;
 }
 .ranking-type {
     font-weight: bold;
     margin-right: 0.5em;
+    color: #01C38D;
 }
 .rank-opinions {
     margin-top: 1em;
     padding-left: 1em;
-    font-size: 0.98em;
+    font-size: 1em;
+    color: #696E79;
 }
 .opinion {
     margin-bottom: 0.4em;
-    color: #444;
+    color: #FFFFFF;
+    background: #132D46;
+    border-radius: 3px;
+    padding: 0.1em 0.5em;
 }
 .rate-btn {
     position: absolute;
     top: 1em;
     right: 1em;
-    background: #3b82f6;
+    background: #01C38D;
     color: #fff;
     border: none;
-    padding: 0.4em 1em;
+    padding: 0.4em 1.1em;
     border-radius: 4px;
     cursor: pointer;
     font-size: 1em;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+.rate-btn:hover {
+    background: #00a372;
 }
 .hidden {
     display: none;
 }
 #rate-item-section {
-    background: #f7f7f7;
-    border-radius: 8px;
+    background: #1b2533;
+    border-radius: 12px;
     padding: 1.5rem;
     margin-top: 2rem;
-    border: 1px solid #cce;
+    border: 1.5px solid #01C38D;
 }
 
 /* Colores de gemas para cada estrella */
@@ -108,4 +150,4 @@ form button[type="button"] {
 .star-sapphire  { color: #0f52ba; }   /* Zafiro - Azul */
 .star-emerald   { color: #50c878; }   /* Esmeralda - Verde */
 .star-diamond   { color: #b9f2ff; }   /* Diamante - Azul muy claro */
-.star-empty     { color: #cccccc; }   /* Estrellas vacías, gris suave */
+.star-empty     { color: #3a3f48; }   /* Estrellas vacías, gris oscuro */
