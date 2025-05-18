@@ -99,3 +99,14 @@ form button[type="button"] {
     margin-top: 2rem;
     border: 1px solid #cce;
 }
+/* ... (resto de tu CSS) ... */
+
+/* Colores de gemas para cada estrella */
+.star-quartz    { color: #dadada; }  /* Cuarzo - Gris claro */
+.star-amethyst  { color: #9966cc; }  /* Amatista - Morado */
+.star-topaz     { color: #ffcc66; }  /* Topacio - Amarillo dorado */
+.star-ruby      { color: #e0115f; }  /* Rubí - Rojo rosado */
+.star-sapphire  { color: #0f52ba; }  /* Zafiro - Azul */
+.star-emerald   { color: #50c878; }  /* Esmeralda - Verde */
+.star-diamond   { color: #b9f2ff; }  /* Diamante - Azul muy claro */
+.star-empty     { color: #cccccc; }  /* Estrellas vacías, gris suave */
