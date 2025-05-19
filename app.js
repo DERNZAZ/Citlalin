@@ -1,6 +1,6 @@
 // INICIO: CONFIGURACIÓN EmailJS
 // Rellena con tus datos reales de EmailJS:
-const EMAILJS_SERVICE_ID = 'service_fngjmi3';
+const EMAILJS_SERVICE_ID = 'service_vxe7qqt';
 const EMAILJS_TEMPLATE_ID = 'template_2ppjeoo';
 const EMAILJS_PUBLIC_KEY = 'jPuXWXqKXZfqr_HmU';
 // El email de destino se configura en la plantilla de EmailJS
