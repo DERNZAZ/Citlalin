@@ -6,19 +6,49 @@
     <title>Citlalin - Blog de Rankings</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
 </head>
 <body>
     <header>
         <h1>Citlalin ⭐</h1>
         <p>Ranking de Videojuegos, Personas Públicas y Lugares. Sistema de 7 estrellas.</p>
         <div id="user-info" class="user-info"></div>
-        <!-- Botonera flotante -->
         <div id="floating-buttons">
             <button id="btn-register" class="main-action-btn">Registrarse</button>
             <button id="btn-califica" class="main-action-btn">Califica</button>
+            <button id="btn-admin-panel" class="main-action-btn admin-btn hidden">Admin</button>
         </div>
     </header>
     <main>
+        <!-- MODAL: Selección de tipo de registro -->
+        <section id="choose-register-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-modal" id="close-choose-register">&times;</span>
+                <h2>¿Cómo deseas registrarte?</h2>
+                <div class="register-choices">
+                    <div class="register-choice" id="choose-user">
+                        <h3>Usuario</h3>
+                        <ul>
+                            <li>Puede opinar y calificar ítems.</li>
+                            <li>Sus opiniones se marcan como "usuario común".</li>
+                            <li>Registro rápido y sencillo.</li>
+                        </ul>
+                        <button class="register-type-btn">Registrarse como Usuario</button>
+                    </div>
+                    <div class="register-choice" id="choose-expert">
+                        <h3>Experto</h3>
+                        <ul>
+                            <li>Sus opiniones se marcan como "experto" y aparecen destacadas.</li>
+                            <li>Debe proporcionar experiencia, documentos o enlaces.</li>
+                            <li>Se requiere validación manual por parte del equipo Citlalin.</li>
+                        </ul>
+                        <button class="register-type-btn">Solicitar ser Experto</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- MODAL: Registro Usuario normal -->
         <section id="register-modal" class="modal hidden">
             <div class="modal-content">
                 <span class="close-modal" id="close-register">&times;</span>
@@ -27,13 +57,40 @@
                     <input type="text" id="reg-name" placeholder="Nombre completo" required maxlength="50">
                     <input type="number" id="reg-age" placeholder="Edad" required min="12" max="120">
                     <input type="email" id="reg-email" placeholder="Correo electrónico" required maxlength="50">
-                    <select id="reg-type" required>
-                        <option value="">Tipo de usuario</option>
-                        <option value="user">Usuario común</option>
-                        <option value="expert">Experto</option>
-                    </select>
                     <button type="submit">Registrarme</button>
                 </form>
+            </div>
+        </section>
+        <!-- MODAL: Registro Experto -->
+        <section id="register-expert-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-modal" id="close-register-expert">&times;</span>
+                <h2>Solicitud para ser Experto</h2>
+                <form id="register-expert-form">
+                    <input type="text" id="exp-name" placeholder="Nombre completo" required maxlength="50">
+                    <input type="number" id="exp-age" placeholder="Edad" required min="12" max="120">
+                    <input type="email" id="exp-email" placeholder="Correo electrónico" required maxlength="50">
+                    <input type="text" id="exp-area" placeholder="Área de especialidad (ejemplo: Videojuegos)" required maxlength="40">
+                    <textarea id="exp-experience" placeholder="Describe brevemente tu experiencia y motivos para ser experto" required maxlength="400" rows="3"></textarea>
+                    <input type="url" id="exp-link1" placeholder="Enlace de respaldo (opcional)" maxlength="90">
+                    <input type="url" id="exp-link2" placeholder="Otro enlace de respaldo (opcional)" maxlength="90">
+                    <input type="file" id="exp-file" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" multiple>
+                    <button type="submit">Enviar Solicitud</button>
+                </form>
+                <div id="exp-success-message" class="hidden" style="margin-top:1em; color:#01C38D; text-align:center;">
+                    ¡Solicitud enviada! Será revisada por el equipo Citlalin.
+                </div>
+            </div>
+        </section>
+        <!-- MODAL: Panel de administración -->
+        <section id="admin-panel-modal" class="modal hidden">
+            <div class="modal-content admin-panel-content">
+                <span class="close-modal" id="close-admin-panel">&times;</span>
+                <h2>Panel de Revisión de Expertos</h2>
+                <div id="admin-expert-list"></div>
+                <div style="margin-top:1.5em; text-align:center;">
+                    <button id="admin-logout" class="register-type-btn" style="width:auto;">Cerrar panel</button>
+                </div>
             </div>
         </section>
         <section id="add-item-modal" class="modal hidden">
