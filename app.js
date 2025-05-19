@@ -1,4 +1,14 @@
-// Datos demo iniciales
+// INICIO: CONFIGURACIÓN EmailJS
+// Rellena con tus datos reales de EmailJS:
+const EMAILJS_SERVICE_ID = 'service_fngjmi3';
+const EMAILJS_TEMPLATE_ID = 'template_2ppjeoo';
+const EMAILJS_PUBLIC_KEY = 'jPuXWXqKXZfqr_HmU';
+// El email de destino se configura en la plantilla de EmailJS
+
+// Inicializa EmailJS
+emailjs.init(EMAILJS_PUBLIC_KEY);
+
+// ---- Datos demo iniciales ----
 let items = [
     {
         title: "The Legend of Zelda: Breath of the Wild",
@@ -30,23 +40,19 @@ let orderFilter = "desc";
 // Usuario actual (se guarda en localStorage)
 let currentUser = null;
 
-// ------- GESTIÓN DE USUARIO ---------
+// ---- Gestión de usuario ----
 
 function saveUser(user) {
     localStorage.setItem("citlalin_user", JSON.stringify(user));
 }
-
 function loadUser() {
     const u = localStorage.getItem("citlalin_user");
     if (u) currentUser = JSON.parse(u);
 }
-
 function clearUser() {
     localStorage.removeItem("citlalin_user");
     currentUser = null;
 }
-
-// Mostrar usuario en cabecera
 function renderUserInfo() {
     const el = document.getElementById("user-info");
     if (currentUser) {
@@ -63,7 +69,7 @@ function renderUserInfo() {
     }
 }
 
-// ------- ESTRELLAS Y GEMAS ---------
+// ---- Estrellas y gemas ----
 
 function getStarClass(num) {
     switch(num) {
@@ -77,7 +83,6 @@ function getStarClass(num) {
         default: return "star-empty";
     }
 }
-
 function getGemName(num) {
     switch(num) {
         case 1: return "Cuarzo";
@@ -90,7 +95,6 @@ function getGemName(num) {
         default: return "";
     }
 }
-
 function renderStars(num) {
     let html = "";
     for(let i=1; i<=7; i++) {
@@ -102,13 +106,12 @@ function renderStars(num) {
     }
     return html;
 }
-
 function avg(arr) {
     if (arr.length === 0) return 0;
     return Math.round(arr.reduce((a, b) => a + b, 0) / arr.length);
 }
 
-// ------- MOSTRAR ITEMS ---------
+// ---- Mostrar items ----
 
 function renderItems() {
     let filtered = items.filter(item => categoryFilter === "all" || item.category === categoryFilter);
@@ -155,7 +158,8 @@ function renderItems() {
     });
 }
 
-// Filtros
+// ---- Filtros ----
+
 document.getElementById('category-filter').onchange = function() {
     categoryFilter = this.value;
     renderItems();
@@ -165,7 +169,7 @@ document.getElementById('order-filter').onchange = function() {
     renderItems();
 };
 
-// ------- MODALES Y BOTONES SUPERIORES ---------
+// ---- Modales y botones superiores ----
 
 function showModal(id) {
     document.getElementById(id).classList.remove('hidden');
@@ -174,30 +178,45 @@ function closeModal(id) {
     document.getElementById(id).classList.add('hidden');
 }
 
-// Botón "Registrarse"
+// -- Botón "Registrarse" abre modal para elegir tipo --
 document.getElementById('btn-register').onclick = function() {
+    showModal('choose-register-modal');
+};
+// -- Cerrar modal de elección --
+document.getElementById('close-choose-register').onclick = function() {
+    closeModal('choose-register-modal');
+};
+// -- Selección de tipo de registro --
+document.querySelector('#choose-user .register-type-btn').onclick = function() {
+    closeModal('choose-register-modal');
     showModal('register-modal');
 };
-// Botón "Califica"
+document.querySelector('#choose-expert .register-type-btn').onclick = function() {
+    closeModal('choose-register-modal');
+    showModal('register-expert-modal');
+};
+// -- Cerrar modales registro usuario/experto --
+document.getElementById('close-register').onclick = function() {
+    closeModal('register-modal');
+};
+document.getElementById('close-register-expert').onclick = function() {
+    closeModal('register-expert-modal');
+};
+// -- Botón "Califica" --
 document.getElementById('btn-califica').onclick = function() {
     if (!currentUser) {
         alert('Debes estar registrado para agregar un ítem.');
-        showModal('register-modal');
+        showModal('choose-register-modal');
         return;
     }
     showModal('add-item-modal');
 };
-
-// Cierra modal registro
-document.getElementById('close-register').onclick = function() {
-    closeModal('register-modal');
-};
-// Cierra modal agregar ítem
+// -- Cerrar modal agregar ítem --
 document.getElementById('close-add-item').onclick = function() {
     closeModal('add-item-modal');
 };
 
-// ------- AGREGAR ITEM ---------
+// ---- Agregar ítem ----
 
 document.getElementById('item-form').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -217,13 +236,13 @@ document.getElementById('item-form').addEventListener('submit', function(e) {
     renderItems();
 });
 
-// ------- CALIFICAR ITEM ---------
+// ---- Calificar ítem ----
 
 let currentRateIdx = null;
 function openRateForm(idx) {
     if (!currentUser) {
         alert("Debes registrarte o iniciar sesión para calificar.");
-        showModal('register-modal');
+        showModal('choose-register-modal');
         return;
     }
     currentRateIdx = idx;
@@ -239,47 +258,191 @@ document.getElementById('rate-form').addEventListener('submit', function(e) {
     e.preventDefault();
     if (!currentUser) {
         alert("Debes registrarte o iniciar sesión para calificar.");
-        showModal('register-modal');
+        showModal('choose-register-modal');
         return;
     }
     const rating = parseInt(document.getElementById('star-rating').value);
     const word = document.getElementById('single-word').value.trim();
     if (!rating || !word) return;
     const target = items[currentRateIdx];
-    target.rankings[currentUser.type].push(rating);
-    target.opinions[currentUser.type].push({word, name: currentUser.name});
+    target.rankings[currentUser.type || "user"].push(rating);
+    target.opinions[currentUser.type || "user"].push({word, name: currentUser.name});
     document.getElementById('rate-item-section').classList.add('hidden');
     this.reset();
     renderItems();
     currentRateIdx = null;
 });
 
-// ------- REGISTRO DE USUARIO ---------
+// ---- Registro de usuario común ----
 
 document.getElementById('register-form').addEventListener('submit', function(e) {
     e.preventDefault();
     const name = document.getElementById('reg-name').value.trim();
     const age = parseInt(document.getElementById('reg-age').value);
     const email = document.getElementById('reg-email').value.trim();
-    const type = document.getElementById('reg-type').value;
 
-    if (!name || !age || !email || !type) return;
+    if (!name || !age || !email) return;
 
-    currentUser = { name, age, email, type };
+    currentUser = { name, age, email, type: "user" };
     saveUser(currentUser);
     this.reset();
     closeModal('register-modal');
     updateUI();
 });
 
-// ------- INICIALIZAR Y FLUJO ---------
+// ---- Registro de solicitud de experto ----
+
+document.getElementById('register-expert-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    // Recolectar datos
+    const name = document.getElementById('exp-name').value.trim();
+    const age = parseInt(document.getElementById('exp-age').value);
+    const email = document.getElementById('exp-email').value.trim();
+    const area = document.getElementById('exp-area').value.trim();
+    const exp = document.getElementById('exp-experience').value.trim();
+    const link1 = document.getElementById('exp-link1').value.trim();
+    const link2 = document.getElementById('exp-link2').value.trim();
+    const filesInput = document.getElementById('exp-file');
+    let files = [];
+    if (filesInput && filesInput.files && filesInput.files.length > 0) {
+        for (let i = 0; i < filesInput.files.length; i++) {
+            files.push(filesInput.files[i].name);
+        }
+    }
+    // Guardar solicitud en localStorage
+    const req = { 
+        name, age, email, area, exp, 
+        links: [link1, link2].filter(Boolean), 
+        files, 
+        date: new Date().toISOString(), 
+        status: "pendiente"
+    };
+    let prev = [];
+    try { prev = JSON.parse(localStorage.getItem('citlalin_expert_requests')) || []; } catch {}
+    prev.push(req);
+    localStorage.setItem('citlalin_expert_requests', JSON.stringify(prev));
+    // Enviar por Email
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        name: name,
+        age: age,
+        email: email,
+        area: area,
+        experience: exp,
+        link1: link1,
+        link2: link2,
+        files: files.join(', ')
+    }).then(() => {
+        document.getElementById('exp-success-message').classList.remove('hidden');
+        setTimeout(() => {
+            document.getElementById('exp-success-message').classList.add('hidden');
+            closeModal('register-expert-modal');
+            document.getElementById('register-expert-form').reset();
+        }, 3000);
+    }, (error) => {
+        alert('Error enviando email: ' + error.text);
+    });
+});
+
+// ---- Panel de Administración ----
+
+const ADMIN_PANEL_KEY = "citlalin_admin";
+const ADMIN_PASSWORD = "citlalin2024"; // Cambia esta clave por la que prefieras
+
+// Mostrar botón admin sólo si eres admin
+function updateAdminButton() {
+    const btn = document.getElementById('btn-admin-panel');
+    if (localStorage.getItem(ADMIN_PANEL_KEY) === "yes") {
+        btn.classList.remove('hidden');
+    } else {
+        btn.classList.add('hidden');
+    }
+}
+// Mostrar panel admin
+document.getElementById('btn-admin-panel').onclick = function() {
+    renderAdminPanel();
+    showModal('admin-panel-modal');
+};
+// Cerrar panel admin
+document.getElementById('close-admin-panel').onclick = function() {
+    closeModal('admin-panel-modal');
+};
+document.getElementById('admin-logout').onclick = function() {
+    closeModal('admin-panel-modal');
+};
+// Acceso admin por doble click en logo Citlalin
+document.querySelector('header h1').ondblclick = function() {
+    if (localStorage.getItem(ADMIN_PANEL_KEY) === "yes") {
+        renderAdminPanel();
+        showModal('admin-panel-modal');
+        return;
+    }
+    const pass = prompt("Clave admin:");
+    if (pass && pass === ADMIN_PASSWORD) {
+        localStorage.setItem(ADMIN_PANEL_KEY, "yes");
+        updateAdminButton();
+        renderAdminPanel();
+        showModal('admin-panel-modal');
+    } else if (pass) {
+        alert("Clave incorrecta.");
+    }
+};
+// Renderizar solicitudes en panel admin
+function renderAdminPanel() {
+    let reqs = [];
+    try { reqs = JSON.parse(localStorage.getItem('citlalin_expert_requests')) || []; } catch {}
+    const list = document.getElementById('admin-expert-list');
+    if (reqs.length === 0) {
+        list.innerHTML = "<p style='color:#fff;text-align:center;'>No hay solicitudes pendientes.</p>";
+        return;
+    }
+    list.innerHTML = "";
+    reqs.forEach((r, idx) => {
+        list.innerHTML += `
+        <div class="admin-card">
+            <div><b>Nombre:</b> ${r.name}</div>
+            <div><b>Email:</b> ${r.email}</div>
+            <div><b>Edad:</b> ${r.age}</div>
+            <div><b>Área:</b> ${r.area}</div>
+            <div><b>Experiencia:</b> ${r.exp}</div>
+            <div><b>Enlaces:</b> ${r.links && r.links.length > 0 ? r.links.map(l => `<a href="${l}" target="_blank">${l}</a>`).join(" | ") : "N/A"}</div>
+            <div><b>Archivos:</b> ${r.files && r.files.length > 0 ? r.files.join(", ") : "N/A"}</div>
+            <div><b>Fecha:</b> ${new Date(r.date).toLocaleString()}</div>
+            <div class="expert-status">Estado: ${r.status || "pendiente"}</div>
+            <div class="expert-btns">
+                <button onclick="approveExpert(${idx})">Aprobar</button>
+                <button onclick="rejectExpert(${idx})">Rechazar</button>
+            </div>
+        </div>
+        `;
+    });
+}
+window.approveExpert = function(idx) {
+    let reqs = [];
+    try { reqs = JSON.parse(localStorage.getItem('citlalin_expert_requests')) || []; } catch {}
+    if (!reqs[idx]) return;
+    reqs[idx].status = "aprobado";
+    localStorage.setItem('citlalin_expert_requests', JSON.stringify(reqs));
+    alert("¡Experto aprobado! Ahora puedes darle acceso manualmente cambiando el tipo de usuario en la base de datos/localStorage.");
+    renderAdminPanel();
+};
+window.rejectExpert = function(idx) {
+    let reqs = [];
+    try { reqs = JSON.parse(localStorage.getItem('citlalin_expert_requests')) || []; } catch {}
+    if (!reqs[idx]) return;
+    reqs[idx].status = "rechazado";
+    localStorage.setItem('citlalin_expert_requests', JSON.stringify(reqs));
+    renderAdminPanel();
+};
+
+// ---- Inicializar y flujo ----
 
 function updateUI() {
     renderUserInfo();
     renderItems();
+    updateAdminButton();
 }
-
 window.onload = function() {
     loadUser();
     updateUI();
+    updateAdminButton();
 };
