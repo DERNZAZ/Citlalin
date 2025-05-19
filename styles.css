@@ -20,6 +20,8 @@ header h1 {
     color: #FFFFFF;
     letter-spacing: 2px;
     margin-bottom: 0.2em;
+    cursor: pointer;
+    user-select: none;
 }
 header p {
     font-family: 'Montserrat', 'TT Commons', Arial, sans-serif;
@@ -54,6 +56,7 @@ header p {
     background: #01C38D;
     color: #fff;
 }
+
 /* --- BOTONERA FLOTANTE --- */
 #floating-buttons {
     position: absolute;
@@ -82,6 +85,11 @@ header p {
     color: #01C38D;
     transform: translateY(-2px) scale(1.04);
     border: 1.5px solid #01C38D;
+}
+.admin-btn {
+    background: linear-gradient(90deg, #696E79 70%, #132D46 100%) !important;
+    color: #191E29 !important;
+    border: 1.5px solid #01C38D !important;
 }
 
 /* --- MODALES --- */
@@ -125,7 +133,8 @@ header p {
     font-weight: bold;
 }
 .modal-content form input,
-.modal-content form select {
+.modal-content form select,
+.modal-content form textarea {
     width: 100%;
     margin-bottom: 1.1rem;
     padding: 0.8rem;
@@ -135,6 +144,9 @@ header p {
     background: #191E29;
     color: #fff;
     font-family: 'Montserrat', 'TT Commons', Arial, sans-serif;
+}
+.modal-content form textarea {
+    resize: vertical;
 }
 .modal-content form button {
     width: 100%;
@@ -150,6 +162,54 @@ header p {
 }
 .modal-content form button:hover {
     background: #00a372;
+}
+.hidden {
+    display: none !important;
+}
+
+/* MODAL: Elección tipo de registro */
+.register-choices {
+    display: flex;
+    gap: 1.2em;
+    justify-content: center;
+    margin-top: 1.4em;
+}
+.register-choice {
+    flex: 1;
+    background: #191E29;
+    border-radius: 12px;
+    border: 1.5px solid #01C38D;
+    padding: 1.4em 1em 1.7em 1em;
+    box-shadow: 0 2px 12px rgba(1,195,141,0.07);
+    text-align: left;
+}
+.register-choice h3 {
+    color: #01C38D;
+    margin-bottom: 0.8em;
+    text-align: center;
+}
+.register-choice ul {
+    color: #fff;
+    font-size: 1em;
+    margin-bottom: 1em;
+    padding-left: 1.2em;
+}
+.register-type-btn {
+    width: 100%;
+    background: #01C38D;
+    color: #fff;
+    padding: 0.7em 0;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1em;
+    transition: background 0.15s;
+    margin-top: 0.5em;
+}
+.register-type-btn:hover {
+    background: #00a372;
+    color: #191E29;
 }
 
 /* -- Main content -- */
@@ -262,9 +322,8 @@ form button:hover {
 .rate-btn:hover {
     background: #00a372;
 }
-.hidden {
-    display: none;
-}
+
+/* Calificar sección */
 #rate-item-section {
     background: #1b2533;
     border-radius: 12px;
@@ -272,13 +331,98 @@ form button:hover {
     margin-top: 2rem;
     border: 1.5px solid #01C38D;
 }
+#rate-item-section form label {
+    color: #01C38D;
+}
+#rate-item-section form select {
+    margin-bottom: 1em;
+}
+#rate-item-section form button {
+    margin-right: 1em;
+}
 
 /* Colores de gemas para cada estrella */
-.star-quartz    { color: #dadada; }   /* Cuarzo - Gris claro */
-.star-amethyst  { color: #9966cc; }   /* Amatista - Morado */
-.star-topaz     { color: #ffcc66; }   /* Topacio - Amarillo dorado */
-.star-ruby      { color: #e0115f; }   /* Rubí - Rojo rosado */
-.star-sapphire  { color: #0f52ba; }   /* Zafiro - Azul */
-.star-emerald   { color: #50c878; }   /* Esmeralda - Verde */
-.star-diamond   { color: #b9f2ff; }   /* Diamante - Azul muy claro */
-.star-empty     { color: #3a3f48; }   /* Estrellas vacías, gris oscuro */
+.star-quartz    { color: #dadada; }
+.star-amethyst  { color: #9966cc; }
+.star-topaz     { color: #ffcc66; }
+.star-ruby      { color: #e0115f; }
+.star-sapphire  { color: #0f52ba; }
+.star-emerald   { color: #50c878; }
+.star-diamond   { color: #b9f2ff; }
+.star-empty     { color: #3a3f48; }
+
+/* Panel de Administración */
+.admin-panel-content {
+    max-width: 700px;
+}
+#admin-expert-list {
+    margin-top: 1em;
+    max-height: 400px;
+    overflow-y: auto;
+    color: #fff;
+}
+.admin-card {
+    border: 1.5px solid #01C38D;
+    border-radius: 10px;
+    background: #191E29;
+    margin-bottom: 1em;
+    padding: 1em 1.3em;
+    box-shadow: 0 2px 8px rgba(1,195,141,0.06);
+}
+.admin-card .expert-status {
+    font-weight: bold;
+    color: #01C38D;
+}
+.admin-card .expert-btns {
+    margin-top: 1em;
+}
+.admin-card .expert-btns button {
+    margin-right: 1em;
+    background: #01C38D;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 0.4em 1.2em;
+    cursor: pointer;
+    font-weight: 600;
+}
+.admin-card .expert-btns button:hover {
+    background: #00a372;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    main {
+        padding: 1.2rem;
+    }
+    .modal-content {
+        padding: 1.2rem 0.7rem 1rem 0.7rem;
+        max-width: 99vw;
+    }
+    .admin-panel-content {
+        max-width: 99vw;
+    }
+}
+@media (max-width: 600px) {
+    header {
+        padding: 1.5rem 0.3rem 1rem 0.3rem;
+    }
+    #floating-buttons {
+        position: static;
+        flex-direction: column;
+        gap: 0.5em;
+        margin-top: 1em;
+        right: unset;
+    }
+    .register-choices {
+        flex-direction: column;
+        gap: 1em;
+    }
+    main {
+        padding: 0.4rem;
+    }
+    .modal-content {
+        padding: 0.5rem;
+        max-width: 99vw;
+    }
+}
